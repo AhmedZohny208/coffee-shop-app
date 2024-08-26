@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useStore} from '../store/store';
@@ -21,6 +22,7 @@ import {
 
 import HeaderBar from '../components/HeaderBar';
 import CustomIcon from '../components/CustomIcon';
+import CoffeeCard from '../components/CoffeeCard';
 
 const getCategoriesFromData = (data: any) => {
   let temp: any = {};
@@ -48,7 +50,7 @@ const getCoffeeList = (category: string, data: any) => {
 
 const HomeScreen = () => {
   const coffeeList = useStore(state => state.CoffeeList);
-  const beanList = useStore(state => state.BeanList);
+  const BeanList = useStore(state => state.BeanList);
 
   const [categories, setCategories] = useState(
     getCategoriesFromData(coffeeList),
@@ -67,6 +69,8 @@ const HomeScreen = () => {
   const searchCoffee = (search: string) => {};
 
   const resetSearchCoffee = () => {};
+
+  const CoffeCardAddToCart = () => {};
 
   return (
     <SafeAreaView style={styles.screenContainer}>
@@ -148,6 +152,65 @@ const HomeScreen = () => {
             </View>
           ))}
         </ScrollView>
+
+        {/* COFFEE FLAT LIST */}
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={sortedCoffee}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.FlatListContainer}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity onPress={() => {}}>
+                <CoffeeCard
+                  id={item.id}
+                  index={item.index}
+                  type={item.type}
+                  roasted={item.roasted}
+                  imagelink_square={item.imagelink_square}
+                  name={item.name}
+                  special_ingredient={item.special_ingredient}
+                  average_rating={item.average_rating}
+                  price={item.prices[2]}
+                  buttonPressHandler={CoffeCardAddToCart}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+
+        {/* COFFEE BEANS TITLE AND LIST */}
+        <Text style={styles.CoffeeBeansTitle}>Coffee Beans</Text>
+
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={BeanList}
+          keyExtractor={item => item.id}
+          contentContainerStyle={[
+            styles.FlatListContainer,
+            {marginBottom: tabBarHeight},
+          ]}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity onPress={() => {}}>
+                <CoffeeCard
+                  id={item.id}
+                  index={item.index}
+                  type={item.type}
+                  roasted={item.roasted}
+                  imagelink_square={item.imagelink_square}
+                  name={item.name}
+                  special_ingredient={item.special_ingredient}
+                  average_rating={item.average_rating}
+                  price={item.prices[2]}
+                  buttonPressHandler={CoffeCardAddToCart}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -161,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryBlackHex,
   },
   ScrollViewFlex: {
-    flex: 1,
+    flexGrow: 1,
   },
   ScreenTitle: {
     color: COLORS.primaryWhiteHex,
@@ -208,5 +271,17 @@ const styles = StyleSheet.create({
     width: SPACING.space_10,
     borderRadius: BORDERRADIUS.radius_10,
     backgroundColor: COLORS.primaryOrangeHex,
+  },
+  FlatListContainer: {
+    gap: SPACING.space_20,
+    paddingVertical: SPACING.space_20,
+    paddingHorizontal: SPACING.space_30,
+  },
+  CoffeeBeansTitle: {
+    color: COLORS.secondaryLightGreyHex,
+    fontSize: FONTSIZE.size_18,
+    fontFamily: FONTFAMILY.poppins_medium,
+    marginLeft: SPACING.space_30,
+    marginTop: SPACING.space_20,
   },
 });
