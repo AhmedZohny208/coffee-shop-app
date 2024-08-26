@@ -17,7 +17,7 @@ interface TabIconProps {
 }
 
 const TabBarBackground = () => (
-  <BlurView overlayColor="" blurAmount={15} style={styles.blurViewStyles} />
+  <BlurView overlayColor="" blurAmount={20} style={styles.blurViewStyles} />
 );
 
 const HomeIcon: React.FC<TabIconProps> = ({focused}) => (
